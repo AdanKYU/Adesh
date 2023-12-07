@@ -1,0 +1,39 @@
+import matplotlib.pyplot as plt
+import numpy as np
+
+def simulate_bullet_trajectory(angle_degrees, initial_velocity=1080.0, num_points=1000):
+    g = 9.8  # acceleration due to gravity (m/s^2)
+    angle_radians = np.radians(angle_degrees)
+    
+    # Time of flight
+    total_time = (2 * initial_velocity * np.sin(angle_radians)) / g
+    
+    # Discretize time for plotting
+    time_points = np.linspace(0, total_time, num=num_points)
+    
+    # Calculate the trajectory
+    horizontal_distance = initial_velocity * np.cos(angle_radians) * time_points
+    vertical_distance = initial_velocity * np.sin(angle_radians) * time_points - 0.5 * g * time_points**2
+    
+    return horizontal_distance, vertical_distance
+
+def plot_trajectory(angles, labels):
+    plt.figure(figsize=(10, 6))
+
+    for angle, label in zip(angles, labels):
+        horizontal, vertical = simulate_bullet_trajectory(angle)
+        plt.plot(horizontal, vertical, label=label)
+
+    plt.title('Simulation of .22LR Bullet Trajectory at Different Angles')
+    plt.xlabel('Horizontal Distance (m)')
+    plt.ylabel('Vertical Distance (m)')
+    plt.legend()
+    plt.grid(True)
+    plt.show()
+
+if __name__ == "__main__":
+    # Example usage
+    angles = [0, 45, 90]
+    labels = ['Horizontal (0 degrees)', '45 degrees', 'Vertical (90 degrees)']
+
+    plot_trajectory(angles, labels)
